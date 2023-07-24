@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { chats } from "@/public/data/chats";
 import Image from "next/image";
-import userdp from "@/public/user.jpg";
 
 const page = ({ params }: any) => {
   const [allChats, setChats] = useState(chats);
@@ -13,7 +12,7 @@ const page = ({ params }: any) => {
   return (
     <main className="m-auto h-screen max-w-3xl text-white p-2">
       {chat && (
-        <div className="chat h-[88%] pt-2 flex flex-col overflow-y-scroll">
+        <div className="chat h-[86%] pt-2 flex flex-col overflow-y-scroll mb-4 pb-1 pr-1">
           {chat.msgs.map((msg: any, index: any) => (
             <div
               key={index}

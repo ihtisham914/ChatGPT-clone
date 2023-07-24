@@ -23,6 +23,26 @@ export const chats = [
         text: "Programming is writing code for the computer to understand instructions",
         status: "response",
       },
+      {
+        userId: 1,
+        text: "what is programming",
+        status: "sent",
+      },
+      {
+        userId: 1,
+        text: "Programming is writing code for the computer to understand instructions",
+        status: "response",
+      },
+      {
+        userId: 1,
+        text: "what is programming",
+        status: "sent",
+      },
+      {
+        userId: 1,
+        text: "Programming is writing code for the computer to understand instructions",
+        status: "response",
+      },
     ],
   },
   {
