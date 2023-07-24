@@ -10,12 +10,15 @@ import Link from "next/link";
 const SideNav = () => {
   return (
     <div className="w-[320px] h-full bg-[#202123] p-2">
-      <div className="flex items-center gap-4 py-3 px-4 border border-gray-600 text-sm rounded-lg hover:bg-gray-950 cursor-pointer transition-all">
+      <Link
+        href={`/chat`}
+        className="flex items-center gap-4 py-3 px-4 border border-gray-600 text-sm rounded-lg hover:bg-gray-950 cursor-pointer transition-all"
+      >
         <span className="text-lg">
           <BiPlus />
         </span>
         <span>New Chat</span>
-      </div>
+      </Link>
 
       {/* All chats */}
       <div className="chats flex flex-col gap-1 h-[80vh] overflow-y-scroll mt-2 mb-1 pr-1">

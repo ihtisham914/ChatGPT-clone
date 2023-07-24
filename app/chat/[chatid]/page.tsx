@@ -44,7 +44,7 @@ const page = ({ params }: any) => {
           ))}
         </div>
       )}
-      <div className="flex items-center gap-4 justify-between w-full p-4 rounded-xl shadow-lg border border-gray-600">
+      <div className="flex items-center gap-4 justify-between w-full p-4 rounded-xl shadow-lg shadow-slate-700 border border-gray-600">
         <input
           className="w-full ouline-none bg-transparent focus:outline-none placeholder:text-gray-400"
           type="text"
