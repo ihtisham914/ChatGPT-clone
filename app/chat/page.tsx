@@ -1,8 +1,14 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { points } from "@/public/data/disclaimer";
 
 const page = () => {
+  const [msg, setMsg] = useState<string>("");
+
+  // FUNCTION TO SEND MESSAGE TO CHATGPT
+  const handleSend = () => {};
   return (
     <main className="m-auto h-screen max-w-3xl text-white p-2">
       <div className="chat h-[86%] pt-2 flex items-center flex-col">
@@ -36,9 +42,14 @@ const page = () => {
           type="text"
           name="query"
           id="query"
+          onChange={(e) => setMsg(e.target.value)}
+          value={msg}
           placeholder="Ask ChatGpt"
         />
-        <span className="p-2 rounded-lg text-gray-200 bg-[#19C27D] cursor-pointer">
+        <span
+          onClick={handleSend}
+          className="p-2 rounded-lg text-gray-200 bg-[#19C27D] cursor-pointer"
+        >
           <BsFillSendFill />
         </span>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiPlus, BiTrash } from "react-icons/bi";
 import { BsChatDots, BsThreeDotsVertical } from "react-icons/bs";
 import userdp from "../public/user.jpg";
@@ -13,12 +13,31 @@ import { FiLogOut } from "react-icons/fi";
 import { RootState } from "@/GlobaleState/store";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import { query, where, collection, onSnapshot } from "firebase/firestore";
+import { db } from "@/app/firebase";
 
 const SideNav = () => {
   const [menuModal, setMenuModal] = useState(false);
+  const chatsRef = collection(db, "chats");
+  const [allChats, setChats] = useState<any>();
   const UserProfile: any = useSelector(
     (state: RootState) => state.users.UserProfile
   );
+
+  useEffect(() => {
+    const queryChats = query(chatsRef, where("email", "==", UserProfile.email));
+
+    onSnapshot(queryChats, (snapshot) => {
+      let chats = [];
+      snapshot.forEach((doc) => {
+        chats.push({ ...doc.data(), _id: doc.id });
+      });
+      setChats(chats);
+    });
+  }, []);
+
+  console.log(allChats);
+
   return (
     <>
       {UserProfile?.email && (
@@ -35,21 +54,22 @@ const SideNav = () => {
 
           {/* All chats */}
           <div className="chats flex flex-col gap-1 h-[80vh] overflow-y-scroll mt-2 mb-1 pr-1 border-b border-gray-400">
-            {chats.map((chat, index) => (
-              <Link
-                key={index}
-                href={`/chat/${chat._id}`}
-                className="flex items-center justify-between cursor-pointer transition-all w-full py-3 px-3 hover:bg-gray-700 rounded-lg"
-              >
-                <div className="flex items-center gap-2">
-                  <BsChatDots />
-                  <span>{chat.name}</span>
-                </div>
-                <span className="text-gray-400 hover:text-white">
-                  <BiTrash />
-                </span>
-              </Link>
-            ))}
+            {allChats &&
+              allChats.map((chat: any, index: any) => (
+                <Link
+                  key={index}
+                  href={`/chat/${chat._id}`}
+                  className="flex items-center justify-between cursor-pointer transition-all w-full py-3 px-3 hover:bg-gray-700 rounded-lg"
+                >
+                  <div className="flex items-center gap-2">
+                    <BsChatDots />
+                    <span>{chat.name}</span>
+                  </div>
+                  <span className="text-gray-400 hover:text-white">
+                    <BiTrash />
+                  </span>
+                </Link>
+              ))}
           </div>
 
           {/* user account */}
@@ -58,14 +78,14 @@ const SideNav = () => {
               onClick={() => setMenuModal(!menuModal)}
               className="flex items-center gap-2"
             >
-              <Image
-                src={userdp}
+              <img
+                src={UserProfile.photoURL || userdp}
                 height={35}
                 width={35}
                 className="rounded-md"
                 alt="user profile"
               />
-              <span>Ihtisham Ul Haq</span>
+              <span>{UserProfile.username}</span>
             </div>
             <span className="cursor-pointer">
               <BsThreeDotsVertical />

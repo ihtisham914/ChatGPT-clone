@@ -6,18 +6,18 @@ export const userSlice = createSlice({
   name: "user",
   initialState: {
     UserProfile: null,
-    token: "",
+    token: null,
     pending: false,
     error: false,
   },
   reducers: {
     SignIn: (state, action) => {
-      state.UserProfile = action.payload.user;
+      state.UserProfile = action.payload.User;
       state.token = action.payload.token;
     },
     SignOut: (state, action) => {
       state.UserProfile = null;
-      state.token = "";
+      state.token = null;
     },
   },
 });

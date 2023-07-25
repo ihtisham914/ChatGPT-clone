@@ -23,15 +23,21 @@ const page = () => {
       const result = await signInWithPopup(auth, GoogleProvider);
       cookies.set("auth-token", result.user.refreshToken);
 
-      const User = {
-        username: auth.currentUser?.displayName,
-        email: auth.currentUser?.email,
-        photoURL: auth.currentUser?.photoURL,
+      const UserData = {
+        User: {
+          username: auth.currentUser?.displayName,
+          email: auth.currentUser?.email,
+          photoURL: auth.currentUser?.photoURL,
+        },
+        token: result.user.refreshToken,
       };
-      dispatch(SignIn(User));
 
-      // storing the user in firebase database
-      await addDoc(userRef, User);
+      dispatch(SignIn(UserData));
+
+      // // storing the user in firebase database
+      // await addDoc(userRef, UserData.User);
+
+      // console.log("user added to firebase");
       navigate.push("/chat");
 
       // toast.success("Signed in successfully", {

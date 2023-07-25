@@ -1,19 +1,42 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsFillSendFill } from "react-icons/bs";
-import { chats } from "@/public/data/chats";
 import Image from "next/image";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { db } from "@/app/firebase";
+import { orderBy } from "firebase/firestore/lite";
 
 const page = ({ params }: any) => {
-  const [allChats, setChats] = useState(chats);
+  const [chat, setChat] = useState([]);
   const chatid = params.chatid;
-  var chat = allChats.find((chat) => chat._id === chatid);
-  console.log(chat);
+  const [msg, setMag] = useState("");
+  const [messages, setMessages] = useState([]);
+  const messagesRef = collection(db, `chats/${chatid}/messages`);
+
+  useEffect(() => {
+    // Get messages from firebase
+    const queryMessages = query(messagesRef, orderBy("sentAt"));
+    onSnapshot(queryMessages, (snapshot) => {
+      let messages = [];
+      snapshot.forEach((doc) => {
+        messages.push({ ...doc.data(), id: doc.id });
+      });
+      setMessages(messages);
+    });
+
+    // setTimeout(() => {
+    //   lastmsg?.current?.scrollIntoView({
+    //     behavior: "smooth",
+    //   });
+    // });
+  }, [messages]);
+
   return (
     <main className="m-auto h-screen max-w-3xl text-white p-2">
-      {chat && (
+      {messages && (
         <div className="chat h-[84%] pt-2 flex flex-col overflow-y-scroll mb-4 pb-1 pr-1">
-          {chat.msgs.map((msg: any, index: any) => (
+          {messages.map((msg: any, index: any) => (
             <div
               key={index}
               className={`flex items-start gap-3 py-6 px-8 ${
@@ -49,6 +72,8 @@ const page = ({ params }: any) => {
           type="text"
           name="query"
           id="query"
+          value={msg}
+          onChange={(e) => setMag(e.target.value)}
           placeholder="Ask ChatGpt"
         />
         <span className="p-2 rounded-lg text-gray-200 bg-[#19C27D] cursor-pointer">
