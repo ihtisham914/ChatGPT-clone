@@ -3,12 +3,44 @@
 import React, { useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { points } from "@/public/data/disclaimer";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase";
+import { useSelector } from "react-redux";
+import { RootState } from "@/GlobaleState/store";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+  const navigate = useRouter();
   const [msg, setMsg] = useState<string>("");
+  const UserProfile: any = useSelector(
+    (state: RootState) => state.users.UserProfile
+  );
+  const chatRef = collection(db, `chats`);
 
-  // FUNCTION TO SEND MESSAGE TO CHATGPT
-  const handleSend = () => {};
+  const handleSend = async () => {
+    if (msg == null || msg.length <= 0) return;
+
+    // creating new chat
+    const newChat = {
+      name: msg.split(" ").slice(0, 3).join(" "),
+      email: UserProfile.email,
+      updatedAt: serverTimestamp(),
+    };
+
+    const chat = await addDoc(chatRef, newChat);
+
+    const newMsg = {
+      text: msg,
+      status: "sent",
+      sentAt: serverTimestamp(),
+    };
+
+    const messagesRef = collection(db, `chats/${chat.id}/messages`);
+
+    setMsg("");
+    await addDoc(messagesRef, newMsg);
+    navigate.push(`/chat/${chat.id}`);
+  };
   return (
     <main className="m-auto h-screen max-w-3xl text-white p-2">
       <div className="chat h-[86%] pt-2 flex items-center flex-col">

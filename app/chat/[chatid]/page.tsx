@@ -2,7 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import Image from "next/image";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  query,
+  serverTimestamp,
+  addDoc,
+} from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "@/app/firebase";
 import { orderBy } from "firebase/firestore/lite";
@@ -10,7 +16,7 @@ import { orderBy } from "firebase/firestore/lite";
 const page = ({ params }: any) => {
   const [chat, setChat] = useState([]);
   const chatid = params.chatid;
-  const [msg, setMag] = useState("");
+  const [msg, setMsg] = useState("");
   const [messages, setMessages] = useState([]);
   const messagesRef = collection(db, `chats/${chatid}/messages`);
 
@@ -31,6 +37,20 @@ const page = ({ params }: any) => {
     //   });
     // });
   }, [messages]);
+
+  // FUNCTION TO SEND MESSAGE TO CHATGPT
+  const handleSend = async () => {
+    if (msg == null || msg.length <= 0) return;
+
+    const newMsg = {
+      text: msg,
+      status: "sent",
+      sentAt: serverTimestamp(),
+    };
+
+    setMsg("");
+    await addDoc(messagesRef, newMsg);
+  };
 
   return (
     <main className="m-auto h-screen max-w-3xl text-white p-2">
@@ -66,14 +86,17 @@ const page = ({ params }: any) => {
           ))}
         </div>
       )}
-      <div className="flex items-center gap-4 justify-between w-full p-4 rounded-xl shadow-lg shadow-slate-700 border border-gray-600">
+      <div
+        onClick={handleSend}
+        className="flex items-center gap-4 justify-between w-full p-4 rounded-xl shadow-lg shadow-slate-700 border border-gray-600"
+      >
         <input
           className="w-full ouline-none bg-transparent focus:outline-none placeholder:text-gray-400"
           type="text"
           name="query"
           id="query"
           value={msg}
-          onChange={(e) => setMag(e.target.value)}
+          onChange={(e) => setMsg(e.target.value)}
           placeholder="Ask ChatGpt"
         />
         <span className="p-2 rounded-lg text-gray-200 bg-[#19C27D] cursor-pointer">
