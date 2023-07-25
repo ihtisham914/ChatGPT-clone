@@ -23,7 +23,7 @@ const page = () => {
           {points.map((point, index) => (
             <div
               key={index}
-              className="border border-gray-500 rounded-md p-2 text-gray-300"
+              className="bg-[#3E3F4B] rounded-md p-3 text-gray-300"
             >
               {point}
             </div>
@@ -42,6 +42,10 @@ const page = () => {
           <BsFillSendFill />
         </span>
       </div>
+      <p className="text-[14px] mt-2 text-gray-400 text-center">
+        Developed with love ❤️ and hope 🙂 by{" "}
+        <span className="text-gray-300">Ihtisham Ul Haq</span>
+      </p>
     </main>
   );
 };

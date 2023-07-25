@@ -2,6 +2,7 @@ import SideNav from "@/components/SideNav";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Providers } from "@/GlobaleState/Provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +21,12 @@ export default function RootLayout({
       <body
         className={`${inter.className} flex items-start h-screen w-screen text-white`}
       >
-        {/* Side menu */}
-        <SideNav />
-        {/* Chat */}
-        <div className="h-full w-full bg-[#343541]">{children}</div>
+        <Providers>
+          {/* Side menu */}
+          <SideNav />
+          {/* Chat */}
+          <div className="h-full w-full bg-[#343541]">{children}</div>
+        </Providers>
       </body>
     </html>
   );

@@ -12,7 +12,7 @@ const page = ({ params }: any) => {
   return (
     <main className="m-auto h-screen max-w-3xl text-white p-2">
       {chat && (
-        <div className="chat h-[86%] pt-2 flex flex-col overflow-y-scroll mb-4 pb-1 pr-1">
+        <div className="chat h-[84%] pt-2 flex flex-col overflow-y-scroll mb-4 pb-1 pr-1">
           {chat.msgs.map((msg: any, index: any) => (
             <div
               key={index}
@@ -55,6 +55,10 @@ const page = ({ params }: any) => {
           <BsFillSendFill />
         </span>
       </div>
+      <p className="text-[14px] mt-2 text-gray-400 text-center">
+        Developed with love ❤️ and hope 🙂 by{" "}
+        <span className="text-gray-300">Ihtisham Ul Haq</span>
+      </p>
     </main>
   );
 };
